@@ -6,29 +6,32 @@ namespace DataStructure
 {
     public class AVLTree
     {
-        AVLNode root = null;
+        private AVLNode _root = null;
         private class AVLNode
         {
-            public int value = 0;
-            public AVLNode RightChild = null;
-            public AVLNode LeftChild = null;
+
+            public int Value { get; set; } = 0;
+            public AVLNode RightChild { get; set; } = null;
+            public AVLNode LeftChild { get; set; } = null;
+
+            
             public int height = 0;
             public AVLNode(int value)
             {
-                this.value = value;
+                Value = value;
             }
         }
 
         public void Insert(int value)
         {
-            root = Insert(root, value);
+            _root = Insert(_root, value);
         }
         private AVLNode Insert(AVLNode root, int Value)
         {
             if (root == null)
                 return new AVLNode(Value);
 
-            if (Value > root.value)
+            if (Value > root.Value)
                 root.RightChild = Insert(root.RightChild, Value);
             else
                 root.LeftChild = Insert(root.LeftChild, Value);
@@ -81,7 +84,7 @@ namespace DataStructure
         }
 
         public bool IsBalanced() =>
-            IsBalanced(root);
+            IsBalanced(_root);
         
         private bool IsBalanced(AVLNode node)
         {
@@ -95,7 +98,7 @@ namespace DataStructure
 
         private void SetHeight(AVLNode node)
         {
-            node.height =  Math.Max(Height(root.LeftChild), Height(root.RightChild)) + 1;
+            node.height =  Math.Max(Height(_root.LeftChild), Height(_root.RightChild)) + 1;
         }
 
         private bool IsLeftHeavy(AVLNode node) =>

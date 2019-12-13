@@ -12,8 +12,7 @@ namespace DataStructure
         private class Node
         {
             public string label { get; private set; }
-            public List<Edge> edges = new List<Edge>();
-            public List<Edge> getEdges => edges;
+            public List<Edge> Edges = new List<Edge>();
 
             public Node(string label)
             {
@@ -22,7 +21,7 @@ namespace DataStructure
 
             public void AddEdge(Node to, int weight)
             {
-                edges.Add(new Edge(this, to, weight));
+                Edges.Add(new Edge(this, to, weight));
             }
         }
         private class Edge
@@ -98,7 +97,7 @@ namespace DataStructure
                 var current = queue.DeleteMin().node;
                 visited.Add(current);
 
-                foreach (var edge in current.getEdges)
+                foreach (var edge in current.Edges)
                 {
                     if (visited.Contains(edge.to))
                         continue;

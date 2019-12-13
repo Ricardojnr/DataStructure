@@ -11,15 +11,15 @@ namespace DataStructure
         private Dictionary<Node, List<Node>> _adjacencyList = new Dictionary<Node, List<Node>>();
         private class Node
         {
-            public string label { get; private set; }
+            public string Label { get; private set; }
 
             public Node(string label)
             {
-                this.label = label;
+                Label = label;
             }
             public override string ToString()
             {
-                return label;
+                return Label;
             }
         }
         public void AddNode(string label)
@@ -85,7 +85,7 @@ namespace DataStructure
         }
         private void DepthFirst(Node root, HashSet<Node> visited)
         {
-            Console.WriteLine(root.label);
+            Console.WriteLine(root.Label);
             visited.Add(root);
 
             foreach (var node in _adjacencyList[root])
@@ -152,7 +152,7 @@ namespace DataStructure
             List<string> Sorted = new List<string>();
             while (stack.Count != 0)
             {
-                Sorted.Add(stack.Pop().label);
+                Sorted.Add(stack.Pop().Label);
             }
             return Sorted;
         }

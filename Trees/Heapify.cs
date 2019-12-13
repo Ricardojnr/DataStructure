@@ -6,8 +6,6 @@ namespace DataStructure
 {
     public class Heapify
     {
-
-
         public static void Heapy(int[] array)
         {
             Convert.ToDouble(9 / 2);

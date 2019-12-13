@@ -6,17 +6,17 @@ namespace DataStructure
 {
     public class MinHeap
     {
-        private Node[] nodes = new Node[10];
-        private int size;
+        private Node[] _nodes = new Node[10];
+        private int _size;
         public class Node
         {
-            public int key;
-            public string value;
+            public int Key;
+            public string Value;
 
             public Node(int key, string value)
             {
-                this.key = key;
-                this.value = value;
+                Key = key;
+                Value = value;
             }
         }
 
@@ -25,7 +25,7 @@ namespace DataStructure
             if (IsFull())
                 throw new ArgumentNullException();
 
-            nodes[size++] = new Node(priority, value);
+            _nodes[_size++] = new Node(priority, value);
 
             BubbleUp();
         }
@@ -33,9 +33,9 @@ namespace DataStructure
         {
             if (IsEmpty())
                 throw new Exception();
-            var root = nodes[0].key;
+            var root = _nodes[0].Key;
             
-            nodes[0] = nodes[--size];
+            _nodes[0] = _nodes[--_size];
             BubbleDown();
 
             return root;
@@ -44,7 +44,7 @@ namespace DataStructure
         private void BubbleDown()
         {
             var index = 0;
-            while (index <= size && !IsValidParent(index))
+            while (index <= _size && !IsValidParent(index))
             {
                 var smallerChildIndex = SmallerChildIndex(index);
                 Swap(index, smallerChildIndex);
@@ -58,7 +58,7 @@ namespace DataStructure
             if (!HasRightChild(index))
                 return LeftChildIndex(index);
 
-            return (LeftChild(index).key < RightChild(index).key) ?
+            return (LeftChild(index).Key < RightChild(index).Key) ?
                 LeftChildIndex(index) :
                 RightChildIndex(index);
 
@@ -68,28 +68,28 @@ namespace DataStructure
             if (!HasLeftChild(index))
                 return true;
 
-            var isValid = nodes[index].key <= LeftChild(index).key;
+            var isValid = _nodes[index].Key <= LeftChild(index).Key;
 
             if (HasRightChild(index))
-                isValid &= nodes[index].key <= RightChild(index).key;
+                isValid &= _nodes[index].Key <= RightChild(index).Key;
 
             return isValid;
         }
 
         private bool HasLeftChild(int index)
         {
-            return LeftChildIndex(index) <= size;
+            return LeftChildIndex(index) <= _size;
         }
         private bool HasRightChild(int index)
         {
-            return RightChildIndex(index) <= size;
+            return RightChildIndex(index) <= _size;
         }
 
         private void BubbleUp()
         {
-            var index = size - 1;
+            var index = _size - 1;
             
-            while (index > 0 && nodes[index].key < nodes[Parent(index)].key)
+            while (index > 0 && _nodes[index].Key < _nodes[Parent(index)].Key)
             {
                 Swap(index, Parent(index));
                 index = Parent(index);
@@ -97,9 +97,9 @@ namespace DataStructure
         }
         private void Swap(int first, int second)
         {
-            var temp = nodes[first];
-            nodes[first] = nodes[second];
-            nodes[second] = temp;
+            var temp = _nodes[first];
+            _nodes[first] = _nodes[second];
+            _nodes[second] = temp;
         }
 
         private int Parent(int index)
@@ -108,11 +108,11 @@ namespace DataStructure
         }
         private Node LeftChild(int index)
         {
-            return nodes[LeftChildIndex(index)];
+            return _nodes[LeftChildIndex(index)];
         }
         private Node RightChild(int index)
         {
-            return nodes[RightChildIndex(index)];
+            return _nodes[RightChildIndex(index)];
         }
 
         private int LeftChildIndex(int index)
@@ -126,11 +126,11 @@ namespace DataStructure
 
         public bool IsEmpty()
         {
-            return size == 0;
+            return _size == 0;
         }
         private bool IsFull()
         {
-            return size == nodes.Length;
+            return _size == _nodes.Length;
         }
     }
 }

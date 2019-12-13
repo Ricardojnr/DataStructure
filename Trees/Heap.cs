@@ -7,27 +7,27 @@ namespace DataStructure
     public class Heap
     {
 
-        int[] items;
-        int size = 0;
+        int[] _items;
+        int _size = 0;
         public Heap(int max)
         {
-            items = new int[max];
+            _items = new int[max];
         }
         public void Insert(int value)
         {
             IsFull();
             
-            items[size++] = value;
+            _items[_size++] = value;
             BubbleUp();
         }
         public bool IsFull()
         {
-            return size == items.Length;
+            return _size == _items.Length;
         }
         private void BubbleUp()
         {
-            var index = size - 1;
-            while (index > 0 && items[index] > Parent(index))
+            var index = _size - 1;
+            while (index > 0 && _items[index] > Parent(index))
             {
                 Swap(index, Parent(index));
                 index = Parent(index);
@@ -35,11 +35,11 @@ namespace DataStructure
         }
         private bool HasLeftChild(int index)
         {
-            return LeftChildIndex(index) <= size;
+            return LeftChildIndex(index) <= _size;
         }
         private bool HasRightChild(int index)
         {
-            return RightChildIndex(index) <= size;
+            return RightChildIndex(index) <= _size;
         }
         private int Parent(int index)
         {
@@ -47,13 +47,13 @@ namespace DataStructure
         }
         private void Swap(int first, int second)
         {
-            var temp = items[first];
-            items[first] = items[second];
-            items[second] = temp;
+            var temp = _items[first];
+            _items[first] = _items[second];
+            _items[second] = temp;
         }
         private bool IsEmpty()
         {
-            return size == items.Length;
+            return _size == _items.Length;
         }
         public int Remove()
         {
@@ -61,8 +61,8 @@ namespace DataStructure
             if (IsEmpty())
                 throw new Exception();
 
-            var root = items[0];
-            items[0] = items[--size];
+            var root = _items[0];
+            _items[0] = _items[--_size];
             
             BubbleDown();
             
@@ -72,7 +72,7 @@ namespace DataStructure
         {
             
             var index = 0;
-            while (index <= size && !IsValidParent(index))
+            while (index <= _size && !IsValidParent(index))
             {
                 var largerChildIndex = LargerChildIndex(index);
                 Swap(index, largerChildIndex);
@@ -96,21 +96,21 @@ namespace DataStructure
             if (!HasLeftChild(index))
                 return true;
             
-            var isValid = items[index] >= LeftChild(index);
+            var isValid = _items[index] >= LeftChild(index);
 
             if (HasRightChild(index))
-                isValid &= items[index] >= RightChild(index);
+                isValid &= _items[index] >= RightChild(index);
             
-            return  items[index] >= LeftChild(index) &&
-                    items[index] >= RightChild(index);
+            return  _items[index] >= LeftChild(index) &&
+                    _items[index] >= RightChild(index);
         }
         private int LeftChild(int index)
         {
-            return items[LeftChildIndex(index)];
+            return _items[LeftChildIndex(index)];
         }
         private int RightChild(int index)
         {
-            return items[LeftChildIndex(index)];
+            return _items[LeftChildIndex(index)];
         }
         private int LeftChildIndex(int index)
         {
@@ -126,7 +126,7 @@ namespace DataStructure
         }
         private bool IsMaxHeap(int [] array, int index)
         {
-            var lastParentIndex = items.Length / 2 - 1;
+            var lastParentIndex = _items.Length / 2 - 1;
             if (index > lastParentIndex)
                 return true;
 

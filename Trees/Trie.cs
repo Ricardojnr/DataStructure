@@ -11,36 +11,36 @@ namespace DataStructure
 
         private class Node
         {
-            public char value { get; set; }
-            public Dictionary<char, Node> children = new Dictionary<char, Node>();
-            public bool isEndOfWord;
-
-            public Node[] getChildren => children.Select(z => z.Value).ToArray();
+            public char Value { get; set; }
+            private Dictionary<char, Node> _children = new Dictionary<char, Node>();
+            public bool _isEndOfWord { get; set; }
+            
+            public Node[] getChildren => _children.Select(z => z.Value).ToArray();
 
             public Node(char value)
             {
-                this.value = value;
+                this.Value = value;
             }
             public bool HasChild(char ch)
             {
-                return children.ContainsKey(ch);
+                return _children.ContainsKey(ch);
             }
             public void AddChild(char ch)
             {
-                children.Add(ch, new Node(ch));
+                _children.Add(ch, new Node(ch));
             }
             public Node GetChild(char ch)
             {
-                return children[ch];
+                return _children[ch];
             }
             public bool HasChildren()
             {
-                return children.Count > 0;
+                return _children.Count > 0;
             }
 
             public void RemoveChild(char ch)
             {
-                children.Remove(ch);
+                _children.Remove(ch);
             }
         }
 
@@ -57,7 +57,7 @@ namespace DataStructure
 
                 current = current.GetChild(ch);
             }
-            current.isEndOfWord = true;
+            current._isEndOfWord = true;
         }
         public bool Contains(string word)
         {
@@ -70,7 +70,7 @@ namespace DataStructure
 
                 current = current.GetChild(letter);
             }
-            return current.isEndOfWord;
+            return current._isEndOfWord;
         }
         public bool ContaisRecursive(string word)
         {
@@ -79,7 +79,7 @@ namespace DataStructure
         private bool ContaisRecursive(Node current, string word, int index)
         {
             if (index == word.Length)
-                return current.isEndOfWord;
+                return current._isEndOfWord;
 
             var letter = word[index];
 
@@ -104,7 +104,7 @@ namespace DataStructure
             {
                 Traverse(child);
                 //comment Post-Order Traverse.
-                Console.WriteLine(child.value);
+                Console.WriteLine(child.Value);
             }
 
         }
@@ -116,7 +116,7 @@ namespace DataStructure
         {
             if (index == word.Length)
             {
-                root.isEndOfWord = false;
+                root._isEndOfWord = false;
                 return;
             }
 
@@ -128,7 +128,7 @@ namespace DataStructure
 
             Delete(child, word, index + 1);
 
-            if (!child.HasChildren() && !child.isEndOfWord)
+            if (!child.HasChildren() && !child._isEndOfWord)
                 root.RemoveChild(ch);
             //Console.WriteLine(ch);
         }
@@ -146,12 +146,12 @@ namespace DataStructure
             if (root == null)
                 return;
 
-            if (root.isEndOfWord)
+            if (root._isEndOfWord)
                 words.Add(prefix);
 
             foreach (var child in root.getChildren)
             {
-                FindWords(child, prefix + child.value, words);
+                FindWords(child, prefix + child.Value, words);
             }
         }
         private Node FindLastNodeOf(string prefix)
@@ -187,7 +187,7 @@ namespace DataStructure
                 if (children.Length != 1)
                     break;
                 current = children[0];
-                prefix.Append(current.value);
+                prefix.Append(current.Value);
             }
             return prefix.ToString();
         }
