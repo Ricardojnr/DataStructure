@@ -108,7 +108,7 @@ namespace DataStructure
             }
             return last.value;
         }
-        public bool equalsX(BinaryTree Tree)
+        public bool Equals(BinaryTree Tree)
         {
             return CheckEquals(Tree.root, root);
         }
@@ -154,6 +154,7 @@ namespace DataStructure
             TraversePreOrder(root.leftChild);
             TraversePreOrder(root.rightChild);
         }
+        
         private void TraverseInOrder(Node root)
         {
             if (root == null)
@@ -171,6 +172,31 @@ namespace DataStructure
             TraversePostOrder(root.leftChild);
             TraversePostOrder(root.rightChild);
             Console.WriteLine(root.value);
+        }
+        public void TraverseLevelOrder()
+        {
+            for (int i = 0; i < Height(); i++)
+            {
+                foreach (var value in GetNodesAtDistance(i))
+                    Console.WriteLine(value);
+            }
+        }
+
+        public List<int> GetNodesAtDistance(int distance)
+        {
+            var list = new List<int>();
+            GetNodesAtDistance(root, distance, list);
+            return list;
+        }
+        private void GetNodesAtDistance(Node root, int distance, List<int>  list )
+        {
+            if (root == null)
+                return;
+            if (distance == 0)
+                list.Add(root.value);
+
+            GetNodesAtDistance(root.leftChild, distance - 1, list);
+            GetNodesAtDistance(root.rightChild, distance - 1, list);
         }
 
         public int CountLeaves()
@@ -241,13 +267,13 @@ namespace DataStructure
 
             return areSibling || AreSibling(root.leftChild, first, second) || AreSibling(root.rightChild, first, second);
         }
-        public List<int> getAncestors(int value)
+        public List<int> GetAncestors(int value)
         {
             var list = new List<int>();
-            getAncestors(root, list,  value);
+            GetAncestors(root, list,  value);
             return list;
         }
-        private bool getAncestors(Node root, List<int> list, int value)
+        private bool GetAncestors(Node root, List<int> list, int value)
         {
             if (root == null)
                 return false;
@@ -255,7 +281,7 @@ namespace DataStructure
             if (root.value == value)
                 return true;
 
-            if (getAncestors(root.leftChild, list, value) || getAncestors(root.rightChild, list, value))
+            if (GetAncestors(root.leftChild, list, value) || GetAncestors(root.rightChild, list, value))
             {
                 list.Add(root.value);
                 return true;
