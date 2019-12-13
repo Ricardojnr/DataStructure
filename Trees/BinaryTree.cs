@@ -20,37 +20,20 @@ namespace DataStructure
         }
         public void Insert(int value)
         {
-
-            var node = new Node(value);
-            if (_root == null)
-            {
-                _root = node;
-                return;
-            }
-
-            Insert(_root, node);
+            _root = Insert(_root, value);
         }
-
-        private void Insert(Node root, Node node)
+        private Node Insert(Node root, int Value)
         {
-            if (node.Value < root.Value)
-            {
-                if (root.LeftChild == null)
-                {
-                    root.LeftChild = node;
-                    return;
-                }
-                Insert(root.LeftChild, node);
-            }
+            if (root == null)
+                return new Node(Value);
+
+            if (Value > root.Value)
+                root.RightChild = Insert(root.RightChild, Value);
             else
-            {
-                if (root.RightChild == null)
-                {
-                    root.RightChild = node;
-                    return;
-                }
-                Insert(root.RightChild, node);
-            }
+                root.LeftChild = Insert(root.LeftChild, Value);
+
+            return root;
+
         }
         public bool Find(int value)
         {
