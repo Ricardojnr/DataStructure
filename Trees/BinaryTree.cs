@@ -9,64 +9,59 @@ namespace DataStructure
         private Node root = null;
         private class Node
         {
-            public int value = 0;
-            public Node leftChild = null;
-            public Node rightChild = null;
+            public int Value { get; private set; }
+            public Node LeftChild { get; set; } = null;
+            public Node RightChild { get; set; } = null;
 
             public Node(int value)
             {
-                this.value = value;
+                Value = value;
             }
-        }
-
-        public BinaryTree()
-        {
-
         }
         public void Insert(int value)
         {
 
-            Node node = new Node(value);
+            var node = new Node(value);
             if (root == null)
-                root = node;
-            else
             {
-                var current = root;
-
-                while (true)
-                {
-                    if (value < current.value)
-                    {
-                        if (current.leftChild == null)
-                        {
-                            current.leftChild = node;
-                            break;
-                        }
-                        current = current.leftChild;
-                    }
-                    else
-                    {
-                        if (current.rightChild == null)
-                        {
-                            current.rightChild = node;
-                            break;
-                        }
-                        current = current.rightChild;
-                    }
-                }
+                root = node;
+                return;
             }
+
+            Insert(root, node);
         }
 
+        private void Insert(Node root, Node node)
+        {
+            if (node.Value < root.Value)
+            {
+                if (root.LeftChild == null)
+                {
+                    root.LeftChild = node;
+                    return;
+                }
+                Insert(root.LeftChild, node);
+            }
+            else
+            {
+                if (root.RightChild == null)
+                {
+                    root.RightChild = node;
+                    return;
+                }
+                Insert(root.RightChild, node);
+            }
+        }
         public bool Find(int value)
         {
             var current = root;
             while (current != null)
             {
-                if (value < current.value)
-                    current = current.leftChild;
+                if (value < current.Value)
+                    current = current.LeftChild;
                 else
-                if (value > current.value)
-                    current = current.rightChild;
+                if (value > current.Value)
+                    current = current.RightChild;
                 else
                     return true;
             }
@@ -103,10 +98,10 @@ namespace DataStructure
             while (current != null)
             {
                 last = current;
-                current = current.leftChild;
+                current = current.LeftChild;
 
             }
-            return last.value;
+            return last.Value;
         }
         public bool Equals(BinaryTree Tree)
         {
@@ -120,17 +115,17 @@ namespace DataStructure
         {
             DistanceTree(Distance, root);
         }
-       
+
         private void DistanceTree(int Distance, Node Node)
         {
             if (Node == null)
                 return;
 
             if (Distance == 0)
-                Console.WriteLine(Node.value);
+                Console.WriteLine(Node.Value);
 
-            DistanceTree(Distance - 1, Node.leftChild);
-            DistanceTree(Distance - 1, Node.rightChild);
+            DistanceTree(Distance - 1, Node.LeftChild);
+            DistanceTree(Distance - 1, Node.RightChild);
 
         }
 
@@ -139,39 +134,39 @@ namespace DataStructure
             if (Node == null)
                 return true;
 
-            if (Node.value < Min || Node.value > Max)
+            if (Node.Value < Min || Node.Value > Max)
                 return false;
 
-            return IsBinarySearchTree(Node.leftChild, Min, Node.value - 1)
-                && IsBinarySearchTree(Node.rightChild, Node.value + 1, Max);
+            return IsBinarySearchTree(Node.LeftChild, Min, Node.Value - 1)
+                && IsBinarySearchTree(Node.RightChild, Node.Value + 1, Max);
         }
         private void TraversePreOrder(Node root)
         {
             if (root == null)
                 return;
 
-            Console.WriteLine(root.value);
-            TraversePreOrder(root.leftChild);
-            TraversePreOrder(root.rightChild);
+            Console.WriteLine(root.Value);
+            TraversePreOrder(root.LeftChild);
+            TraversePreOrder(root.RightChild);
         }
-        
+
         private void TraverseInOrder(Node root)
         {
             if (root == null)
                 return;
 
-            TraverseInOrder(root.leftChild);
-            Console.WriteLine(root.value);
-            TraverseInOrder(root.rightChild);
+            TraverseInOrder(root.LeftChild);
+            Console.WriteLine(root.Value);
+            TraverseInOrder(root.RightChild);
         }
         private void TraversePostOrder(Node root)
         {
             if (root == null)
                 return;
 
-            TraversePostOrder(root.leftChild);
-            TraversePostOrder(root.rightChild);
-            Console.WriteLine(root.value);
+            TraversePostOrder(root.LeftChild);
+            TraversePostOrder(root.RightChild);
+            Console.WriteLine(root.Value);
         }
         public void TraverseLevelOrder()
         {
@@ -188,15 +183,15 @@ namespace DataStructure
             GetNodesAtDistance(root, distance, list);
             return list;
         }
-        private void GetNodesAtDistance(Node root, int distance, List<int>  list )
+        private void GetNodesAtDistance(Node root, int distance, List<int> list)
         {
             if (root == null)
                 return;
             if (distance == 0)
-                list.Add(root.value);
+                list.Add(root.Value);
 
-            GetNodesAtDistance(root.leftChild, distance - 1, list);
-            GetNodesAtDistance(root.rightChild, distance - 1, list);
+            GetNodesAtDistance(root.LeftChild, distance - 1, list);
+            GetNodesAtDistance(root.RightChild, distance - 1, list);
         }
 
         public int CountLeaves()
@@ -211,7 +206,7 @@ namespace DataStructure
             if (IsLeaf(Node))
                 return 1;
 
-            return CountLeaves(Node.leftChild) + CountLeaves(Node.rightChild);
+            return CountLeaves(Node.LeftChild) + CountLeaves(Node.RightChild);
 
         }
         public int Max()
@@ -223,10 +218,10 @@ namespace DataStructure
             if (Node == null)
                 return 0;
 
-            var left = Max(Node.leftChild);
-            var right = Max(Node.rightChild);
+            var left = Max(Node.LeftChild);
+            var right = Max(Node.RightChild);
 
-            return Math.Max(Math.Max(left, right), Node.value);
+            return Math.Max(Math.Max(left, right), Node.Value);
         }
 
         public bool Contains(int value)
@@ -238,13 +233,13 @@ namespace DataStructure
             if (Node == null)
                 return false;
 
-            if (Node.value == value)
+            if (Node.Value == value)
                 return true;
 
-            if (value > Node.value)
-                return Contains(Node.rightChild, value);
-            else if (value < Node.value)
-                return Contains(Node.leftChild, value);
+            if (value > Node.Value)
+                return Contains(Node.RightChild, value);
+            else if (value < Node.Value)
+                return Contains(Node.LeftChild, value);
 
             return false;
         }
@@ -258,19 +253,19 @@ namespace DataStructure
                 return false;
 
             var areSibling = false;
-            
-            if(root.leftChild != null && root.rightChild != null)
+
+            if (root.LeftChild != null && root.RightChild != null)
             {
-                areSibling = (root.leftChild.value == first && root.rightChild.value == second) ||
-                    (root.rightChild.value == first && root.leftChild.value == second);
+                areSibling = (root.LeftChild.Value == first && root.RightChild.Value == second) ||
+                    (root.RightChild.Value == first && root.LeftChild.Value == second);
             }
 
-            return areSibling || AreSibling(root.leftChild, first, second) || AreSibling(root.rightChild, first, second);
+            return areSibling || AreSibling(root.LeftChild, first, second) || AreSibling(root.RightChild, first, second);
         }
         public List<int> GetAncestors(int value)
         {
             var list = new List<int>();
-            GetAncestors(root, list,  value);
+            GetAncestors(root, list, value);
             return list;
         }
         private bool GetAncestors(Node root, List<int> list, int value)
@@ -278,12 +273,12 @@ namespace DataStructure
             if (root == null)
                 return false;
 
-            if (root.value == value)
+            if (root.Value == value)
                 return true;
 
-            if (GetAncestors(root.leftChild, list, value) || GetAncestors(root.rightChild, list, value))
+            if (GetAncestors(root.LeftChild, list, value) || GetAncestors(root.RightChild, list, value))
             {
-                list.Add(root.value);
+                list.Add(root.Value);
                 return true;
             }
 
@@ -303,7 +298,7 @@ namespace DataStructure
             if (IsLeaf(Node))
                 return 1;
 
-            return 1 + Size(Node.leftChild) + Size(Node.rightChild);
+            return 1 + Size(Node.LeftChild) + Size(Node.RightChild);
         }
         private int Height(Node root)
         {
@@ -313,21 +308,21 @@ namespace DataStructure
             if (IsLeaf(root))
                 return 0;
 
-            return 1 + Math.Max(Height(root.leftChild), Height(root.rightChild));
+            return 1 + Math.Max(Height(root.LeftChild), Height(root.RightChild));
         }
         private bool IsLeaf(Node node)
         {
-            return node.leftChild == null && node.rightChild == null;
+            return node.LeftChild == null && node.RightChild == null;
         }
         private int Min(Node root)
         {
             if (IsLeaf(root))
-                return root.value;
+                return root.Value;
 
-            var left = Min(root.leftChild);
-            var right = Min(root.rightChild);
+            var left = Min(root.LeftChild);
+            var right = Min(root.RightChild);
 
-            return Math.Min(Math.Min(left, right), root.value);
+            return Math.Min(Math.Min(left, right), root.Value);
         }
         private bool CheckEquals(Node first, Node second)
         {
@@ -335,9 +330,9 @@ namespace DataStructure
                 return true;
 
             if (first != null && second != null)
-                return first.value == second.value
-                    && CheckEquals(first.leftChild, second.leftChild)
-                    && CheckEquals(first.rightChild, second.rightChild);
+                return first.Value == second.Value
+                    && CheckEquals(first.LeftChild, second.LeftChild)
+                    && CheckEquals(first.RightChild, second.RightChild);
 
             return false;
         }
